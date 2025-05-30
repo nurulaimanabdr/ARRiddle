@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AR Math Race</title>
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/arjs@1.7.2/aframe/build/aframe-ar.min.js"></script>
+    <style>
+        body { margin: 0; overflow: hidden; }
+        #scoreboard { position: absolute; top: 10px; left: 10px; color: white; font-size: 24px; }
+    </style>
+</head>
+<body>
+    <div id="scoreboard">Score: 0</div>
+    <a-scene embedded arjs="sourceType: webcam;">
+        <a-marker preset="hiro">
+            <a-text value="Solve: 6 + 4 = ?" position="0 0.5 0" color="black"></a-text>
+        </a-marker>
+        <a-marker preset="kanji">
+            <a-text value="Finish! Great Job!" position="0 0.5 0" color="white"></a-text>
+        </a-marker>
+        <a-entity camera></a-entity>
+    </a-scene>
+    <script>
+        let score = 0;
+        const scoreDisplay = document.getElementById('scoreboard');
+        function updateScore() {
+            scoreDisplay.innerText = `Score: ${score}`;
+        }
+        const problemMarker = document.querySelector('a-marker[preset="hiro"]');
+        const finishMarker = document.querySelector('a-marker[preset="kanji"]');
+        problemMarker.addEventListener('markerFound', () => {
+            let answer = prompt("What is the answer to 6 + 4?");
+            if (parseInt(answer) === 10) {
+                alert("Correct! Move on to the next marker.");
+                score += 1;
+                updateScore();
+            } else {
+                alert("Try again!");
+            }
+        });
+        finishMarker.addEventListener('markerFound', () => {
+            alert("Congratulations! You've completed the AR Math Race!");
+        });
+    </script>
+</body>
+</html>
