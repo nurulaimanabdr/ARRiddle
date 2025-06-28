@@ -33,6 +33,7 @@
       <!-- Marker -->
       <a-marker preset="hiro">
         <a-entity id="riddleContainer" position="0 0.5 0">
+          <a-image id="questionImage" position="0 1 0" width="1.5" height="1" src=""></a-image>
           <a-text
             id="riddleText"
             value="Loading..."
@@ -117,91 +118,140 @@
     ></audio>
 
     <script>
-      const riddles = [
-        {
-          question: "I speak without a mouth... What am I?",
-          answers: ["Shadow", "Echo", "Wind"],
-          correct: 1,
-        },
-        {
-          question: "What has to be broken before you can use it?",
-          answers: ["Egg", "Glass", "Box"],
-          correct: 0,
-        },
-        {
-          question:
-            "I’m tall when I’m young, and I’m short when I’m old. What am I?",
-          answers: ["Candle", "Tree", "Human"],
-          correct: 0,
-        },
-        {
-          question: "What goes up but never comes down?",
-          answers: ["Smoke", "Balloon", "Age"],
-          correct: 2,
-        },
-        {
-          question:
-            "The more you take, the more you leave behind. What are they?",
-          answers: ["Footsteps", "Memories", "Holes"],
-          correct: 0,
-        },
-      ];
+  const riddles = [
+    {
+      question: "What does CPU stand for?",
+      answers: ["Central Process Unit", "Central Processing Unit", "Computer Personal Unit"],
+      correct: 1,
+      image: "https://upload.wikimedia.org/wikipedia/commons/5/5e/Microprocessor.jpg",
+    },
+    {
+      question: "Which language is primarily used for web page structure?",
+      answers: ["HTML", "Python", "C++"],
+      correct: 0,
+      image: "https://upload.wikimedia.org/wikipedia/commons/6/61/HTML5_logo_and_wordmark.svg",
+    },
+    {
+      question: "What does RAM stand for?",
+      answers: ["Read Access Memory", "Random Access Memory", "Run Access Memory"],
+      correct: 1,
+      image: "https://upload.wikimedia.org/wikipedia/commons/5/59/RAM_Memory_DDR3.jpg",
+    },
+    {
+      question: "Which of these is a programming language?",
+      answers: ["Photoshop", "Python", "Windows"],
+      correct: 1,
+      image: "https://upload.wikimedia.org/wikipedia/commons/c/c3/Python-logo-notext.svg",
+    },
+    {
+      question: "What does URL stand for?",
+      answers: ["Universal Resource Link", "Uniform Resource Locator", "User Reference Line"],
+      correct: 1,
+      image: "https://upload.wikimedia.org/wikipedia/commons/0/05/Globe_icon.svg",
+    },
+    {
+      question: "Which company developed the Windows OS?",
+      answers: ["Apple", "Microsoft", "Google"],
+      correct: 1,
+      image: "https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg",
+    },
+    {
+      question: "What is the brain of the computer?",
+      answers: ["Motherboard", "Hard Drive", "CPU"],
+      correct: 2,
+      image: "https://upload.wikimedia.org/wikipedia/commons/1/10/CPU_Intel_80486DX2_bottom.jpg",
+    },
+    {
+      question: "Which one is NOT an input device?",
+      answers: ["Keyboard", "Mouse", "Monitor"],
+      correct: 2,
+      image: "https://upload.wikimedia.org/wikipedia/commons/8/87/Monitor_icon_2.png",
+    },
+    {
+      question: "Which of the following is an open-source operating system?",
+      answers: ["Linux", "Windows", "macOS"],
+      correct: 0,
+      image: "https://upload.wikimedia.org/wikipedia/commons/a/af/Tux.png",
+    },
+    {
+      question: "What is used to style a web page?",
+      answers: ["CSS", "C#", "SQL"],
+      correct: 0,
+      image: "https://upload.wikimedia.org/wikipedia/commons/d/d5/CSS3_logo_and_wordmark.svg",
+    },
+  ];
 
-      let score = 0;
-      let current = 0;
+  let score = 0;
+  let current = 0;
 
-      const riddleText = document.getElementById("riddleText");
-      const optionBoxes = ["option1", "option2", "option3"].map((id) =>
-        document.getElementById(id)
-      );
-      const optionTexts = ["text1", "text2", "text3"].map((id) =>
-        document.getElementById(id)
-      );
-      const scoreDisplay = document.getElementById("scoreDisplay");
-      const correctSound = document.getElementById("correctSound");
-      const wrongSound = document.getElementById("wrongSound");
+  const riddleText = document.getElementById("riddleText");
+  const optionBoxes = ["option1", "option2", "option3"].map((id) =>
+    document.getElementById(id)
+  );
+  const optionTexts = ["text1", "text2", "text3"].map((id) =>
+    document.getElementById(id)
+  );
+  const scoreDisplay = document.getElementById("scoreDisplay");
+  const correctSound = document.getElementById("correctSound");
+  const wrongSound = document.getElementById("wrongSound");
+  const questionImage = document.getElementById("questionImage");
 
-      function shuffleRiddles() {
-        for (let i = riddles.length - 1; i > 0; i--) {
-          const j = Math.floor(Math.random() * (i + 1));
-          [riddles[i], riddles[j]] = [riddles[j], riddles[i]];
-        }
-      }
+  function shuffleRiddles() {
+    for (let i = riddles.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [riddles[i], riddles[j]] = [riddles[j], riddles[i]];
+    }
+  }
 
-      function loadRiddle(index) {
-        const r = riddles[index];
-        riddleText.setAttribute("value", r.question);
-        r.answers.forEach((text, i) => {
-          optionTexts[i].setAttribute("value", text);
-          optionBoxes[i].setAttribute("color", "#AAAAAA");
-        });
-      }
+  function loadRiddle(index) {
+    if (index >= riddles.length) {
+      riddleText.setAttribute("value", `🎉 Game Completed! Final Score: ${score} / ${riddles.length}`);
+      questionImage.setAttribute("visible", "false");
+      optionBoxes.forEach((box) => box.setAttribute("visible", "false"));
+      optionTexts.forEach((text) => text.setAttribute("visible", "false"));
+      return;
+    }
 
-      function handleAnswer(index) {
-        const correct = riddles[current].correct;
-        if (index === correct) {
-          score++;
-          correctSound.play();
-          optionBoxes[index].setAttribute("color", "#00FF00");
-        } else {
-          wrongSound.play();
-          optionBoxes[index].setAttribute("color", "#FF0000");
-        }
+    const r = riddles[index];
+    riddleText.setAttribute("value", r.question);
+    questionImage.setAttribute("src", r.image);
+    questionImage.setAttribute("visible", "true");
 
-        scoreDisplay.textContent = "Score: " + score;
+    r.answers.forEach((text, i) => {
+      optionTexts[i].setAttribute("value", text);
+      optionBoxes[i].setAttribute("color", "#AAAAAA");
+      optionBoxes[i].setAttribute("visible", "true");
+      optionTexts[i].setAttribute("visible", "true");
+    });
 
-        setTimeout(() => {
-          current = (current + 1) % riddles.length;
-          loadRiddle(current);
-        }, 1500);
-      }
+    scoreDisplay.textContent = `Score: ${score} / ${riddles.length}`;
+  }
 
-      optionBoxes.forEach((box, i) => {
-        box.addEventListener("click", () => handleAnswer(i));
-      });
+  function handleAnswer(index) {
+    const correct = riddles[current].correct;
+    if (index === correct) {
+      score++;
+      correctSound.play();
+      optionBoxes[index].setAttribute("color", "#00FF00");
+    } else {
+      wrongSound.play();
+      optionBoxes[index].setAttribute("color", "#FF0000");
+    }
 
-      shuffleRiddles();
+    scoreDisplay.textContent = `Score: ${score} / ${riddles.length}`;
+
+    setTimeout(() => {
+      current++;
       loadRiddle(current);
-    </script>
+    }, 1500);
+  }
+
+  optionBoxes.forEach((box, i) => {
+    box.addEventListener("click", () => handleAnswer(i));
+  });
+
+  shuffleRiddles();
+  loadRiddle(current);
+</script>
   </body>
 </html>
