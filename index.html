@@ -33,7 +33,7 @@
       <!-- Marker -->
       <a-marker preset="hiro">
         <a-entity id="riddleContainer" position="0 0.5 0">
-          <a-image id="questionImage" position="0 1 0" width="1.5" height="1" src=""></a-image>
+          <!--a-image id="questionImage" position="0 1 0" width="1.5" height="1" src=""></a-image-->
           <a-text
             id="riddleText"
             value="Loading..."
@@ -44,56 +44,35 @@
           ></a-text>
 
           <!-- Answer Options -->
-          <a-box
-            id="option1"
-            class="clickable"
-            position="-0.8 0 0"
-            depth="0.1"
-            height="0.3"
-            width="0.7"
-            color="#AAAAAA"
-          ></a-box>
-          <a-text
-            id="text1"
-            value=""
-            color="#FFFFFF"
-            align="center"
-            position="-0.8 0 0.1"
-          ></a-text>
+         <a-text
+  id="text1"
+  value=""
+  color="#FFFFFF"
+  align="center"
+  width="1.5"
+  wrap-count="20"
+  position="-0.8 0 0.1"
+></a-text>
 
-          <a-box
-            id="option2"
-            class="clickable"
-            position="0 0 0"
-            depth="0.1"
-            height="0.3"
-            width="0.7"
-            color="#AAAAAA"
-          ></a-box>
-          <a-text
-            id="text2"
-            value=""
-            color="#000000"
-            align="center"
-            position="0 0 0.1"
-          ></a-text>
+<a-text
+  id="text2"
+  value=""
+  color="#000000"
+  align="center"
+  width="1.5"
+  wrap-count="20"
+  position="0 0 0.1"
+></a-text>
 
-          <a-box
-            id="option3"
-            class="clickable"
-            position="0.8 0 0"
-            depth="0.1"
-            height="0.3"
-            width="0.7"
-            color="#AAAAAA"
-          ></a-box>
-          <a-text
-            id="text3"
-            value=""
-            color="#FFFFFF"
-            align="center"
-            position="0.8 0 0.1"
-          ></a-text>
+<a-text
+  id="text3"
+  value=""
+  color="#FFFFFF"
+  align="center"
+  width="1.5"
+  wrap-count="20"
+  position="0.8 0 0.1"
+></a-text>
         </a-entity>
       </a-marker>
 
@@ -123,49 +102,49 @@
       question: "What does CPU stand for?",
       answers: ["Central Process Unit", "Central Processing Unit", "Computer Personal Unit"],
       correct: 1,
-      image: "https://upload.wikimedia.org/wikipedia/commons/5/5e/Microprocessor.jpg",
+      //image: "https://upload.wikimedia.org/wikipedia/commons/5/5e/Microprocessor.jpg",
     },
     {
       question: "Which language is primarily used for web page structure?",
       answers: ["HTML", "Python", "C++"],
       correct: 0,
-      image: "https://upload.wikimedia.org/wikipedia/commons/6/61/HTML5_logo_and_wordmark.svg",
+      //image: "https://upload.wikimedia.org/wikipedia/commons/6/61/HTML5_logo_and_wordmark.svg",
     },
     {
       question: "What does RAM stand for?",
       answers: ["Read Access Memory", "Random Access Memory", "Run Access Memory"],
       correct: 1,
-      image: "https://upload.wikimedia.org/wikipedia/commons/5/59/RAM_Memory_DDR3.jpg",
+      //image: "https://upload.wikimedia.org/wikipedia/commons/5/59/RAM_Memory_DDR3.jpg",
     },
     {
       question: "Which of these is a programming language?",
       answers: ["Photoshop", "Python", "Windows"],
       correct: 1,
-      image: "https://upload.wikimedia.org/wikipedia/commons/c/c3/Python-logo-notext.svg",
+      //image: "https://upload.wikimedia.org/wikipedia/commons/c/c3/Python-logo-notext.svg",
     },
     {
       question: "What does URL stand for?",
       answers: ["Universal Resource Link", "Uniform Resource Locator", "User Reference Line"],
       correct: 1,
-      image: "https://upload.wikimedia.org/wikipedia/commons/0/05/Globe_icon.svg",
+      //image: "https://upload.wikimedia.org/wikipedia/commons/0/05/Globe_icon.svg",
     },
     {
       question: "Which company developed the Windows OS?",
       answers: ["Apple", "Microsoft", "Google"],
       correct: 1,
-      image: "https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg",
+      //image: "https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg",
     },
     {
       question: "What is the brain of the computer?",
       answers: ["Motherboard", "Hard Drive", "CPU"],
       correct: 2,
-      image: "https://upload.wikimedia.org/wikipedia/commons/1/10/CPU_Intel_80486DX2_bottom.jpg",
+      //image: "https://upload.wikimedia.org/wikipedia/commons/1/10/CPU_Intel_80486DX2_bottom.jpg",
     },
     {
       question: "Which one is NOT an input device?",
       answers: ["Keyboard", "Mouse", "Monitor"],
       correct: 2,
-      image: "https://upload.wikimedia.org/wikipedia/commons/8/87/Monitor_icon_2.png",
+      //image: "https://upload.wikimedia.org/wikipedia/commons/8/87/Monitor_icon_2.png",
     },
     {
       question: "Which of the following is an open-source operating system?",
@@ -177,7 +156,7 @@
       question: "What is used to style a web page?",
       answers: ["CSS", "C#", "SQL"],
       correct: 0,
-      image: "https://upload.wikimedia.org/wikipedia/commons/d/d5/CSS3_logo_and_wordmark.svg",
+      //image: "https://upload.wikimedia.org/wikipedia/commons/d/d5/CSS3_logo_and_wordmark.svg",
     },
   ];
 
