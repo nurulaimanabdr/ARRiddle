@@ -118,90 +118,137 @@
 
     <script>
       const riddles = [
-        {
-          question: "I speak without a mouth... What am I?",
-          answers: ["Shadow", "Echo", "Wind"],
-          correct: 1,
-        },
-        {
-          question: "What has to be broken before you can use it?",
-          answers: ["Egg", "Glass", "Box"],
-          correct: 0,
-        },
-        {
-          question:
-            "I’m tall when I’m young, and I’m short when I’m old. What am I?",
-          answers: ["Candle", "Tree", "Human"],
-          correct: 0,
-        },
-        {
-          question: "What goes up but never comes down?",
-          answers: ["Smoke", "Balloon", "Age"],
-          correct: 2,
-        },
-        {
-          question:
-            "The more you take, the more you leave behind. What are they?",
-          answers: ["Footsteps", "Memories", "Holes"],
-          correct: 0,
-        },
-      ];
+  {
+    question: "What does CPU stand for?",
+    answers: ["Central Processing Unit", "Computer Personal Unit", "Central Print Unit"],
+    correct: 0,
+  },
+  {
+    question: "What is the main purpose of RAM in a computer?",
+    answers: ["Permanent storage", "Temporary data storage", "Graphic processing"],
+    correct: 1,
+  },
+  {
+    question: "Which device is used to input text into a computer?",
+    answers: ["Monitor", "Keyboard", "Printer"],
+    correct: 1,
+  },
+  {
+    question: "What does HTTP stand for?",
+    answers: [
+      "HyperText Transfer Protocol",
+      "HyperText Transmission Program",
+      "Hyper Transfer Text Protocol",
+    ],
+    correct: 0,
+  },
+  {
+    question: "Which of these is an example of an Operating System?",
+    answers: ["Windows", "HTML", "Google"],
+    correct: 0,
+  },
+  {
+    question: "What is the function of a hard drive?",
+    answers: ["Process data", "Store data permanently", "Display data"],
+    correct: 1,
+  },
+  {
+    question: "Which language is primarily used to style web pages?",
+    answers: ["HTML", "CSS", "Python"],
+    correct: 1,
+  },
+  {
+    question: "What does USB stand for?",
+    answers: [
+      "Universal Serial Bus",
+      "Unique System Backup",
+      "Unified Service Board",
+    ],
+    correct: 0,
+  },
+  {
+    question: "Which part of the computer executes instructions?",
+    answers: ["CPU", "RAM", "GPU"],
+    correct: 0,
+  },
+  {
+    question: "What is an IP address used for?",
+    answers: ["Identifying a device on a network", "Designing web pages", "Running software"],
+    correct: 0,
+  },
+];
 
-      let score = 0;
-      let current = 0;
+let score = 0;
+let current = 0;
 
-      const riddleText = document.getElementById("riddleText");
-      const optionBoxes = ["option1", "option2", "option3"].map((id) =>
-        document.getElementById(id)
-      );
-      const optionTexts = ["text1", "text2", "text3"].map((id) =>
-        document.getElementById(id)
-      );
-      const scoreDisplay = document.getElementById("scoreDisplay");
-      const correctSound = document.getElementById("correctSound");
-      const wrongSound = document.getElementById("wrongSound");
+const riddleText = document.getElementById("riddleText");
+const optionBoxes = ["option1", "option2", "option3"].map((id) =>
+  document.getElementById(id)
+);
+const optionTexts = ["text1", "text2", "text3"].map((id) =>
+  document.getElementById(id)
+);
+const scoreDisplay = document.getElementById("scoreDisplay");
+const correctSound = document.getElementById("correctSound");
+const wrongSound = document.getElementById("wrongSound");
 
-      function shuffleRiddles() {
-        for (let i = riddles.length - 1; i > 0; i--) {
-          const j = Math.floor(Math.random() * (i + 1));
-          [riddles[i], riddles[j]] = [riddles[j], riddles[i]];
-        }
-      }
+function shuffleRiddles() {
+  for (let i = riddles.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [riddles[i], riddles[j]] = [riddles[j], riddles[i]];
+  }
+}
 
-      function loadRiddle(index) {
-        const r = riddles[index];
-        riddleText.setAttribute("value", r.question);
-        r.answers.forEach((text, i) => {
-          optionTexts[i].setAttribute("value", text);
-          optionBoxes[i].setAttribute("color", "#AAAAAA");
-        });
-      }
+function loadRiddle(index) {
+  const r = riddles[index];
+  riddleText.textContent = r.question;  // Changed to textContent for normal text update
+  r.answers.forEach((text, i) => {
+    optionTexts[i].textContent = text;  // Changed to textContent
+    optionBoxes[i].style.backgroundColor = "#AAAAAA"; // Changed to style.backgroundColor
+    optionBoxes[i].style.pointerEvents = "auto"; // Enable clicking again
+  });
+}
 
-      function handleAnswer(index) {
-        const correct = riddles[current].correct;
-        if (index === correct) {
-          score++;
-          correctSound.play();
-          optionBoxes[index].setAttribute("color", "#00FF00");
-        } else {
-          wrongSound.play();
-          optionBoxes[index].setAttribute("color", "#FF0000");
-        }
+function handleAnswer(index) {
+  // Disable clicking on options while evaluating
+  optionBoxes.forEach(box => (box.style.pointerEvents = "none"));
 
-        scoreDisplay.textContent = "Score: " + score;
+  const correct = riddles[current].correct;
+  if (index === correct) {
+    score++;
+    if (correctSound) correctSound.play();
+    optionBoxes[index].style.backgroundColor = "#00FF00";
+  } else {
+    if (wrongSound) wrongSound.play();
+    optionBoxes[index].style.backgroundColor = "#FF0000";
+  }
 
-        setTimeout(() => {
-          current = (current + 1) % riddles.length;
-          loadRiddle(current);
-        }, 1500);
-      }
+  scoreDisplay.textContent = `Score: ${score}`;
 
-      optionBoxes.forEach((box, i) => {
-        box.addEventListener("click", () => handleAnswer(i));
-      });
+  setTimeout(() => {
+    current++;
 
-      shuffleRiddles();
+    if (current < riddles.length) {
       loadRiddle(current);
+    } else {
+      // Quiz finished
+      riddleText.textContent = `You Win! Final Score: ${score} / ${riddles.length}`;
+      // Remove options or disable them
+      optionBoxes.forEach(box => {
+        box.style.backgroundColor = "#CCCCCC";
+        box.style.pointerEvents = "none";
+      });
+      scoreDisplay.textContent = `Final Score: ${score} / ${riddles.length}`;
+    }
+  }, 1500);
+}
+
+optionBoxes.forEach((box, i) => {
+  box.addEventListener("click", () => handleAnswer(i));
+});
+
+shuffleRiddles();
+loadRiddle(current);
     </script>
   </body>
 </html>
